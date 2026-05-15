@@ -1,7 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
 - master
 
@@ -33,3 +29,11 @@ steps:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
     publishLocation: 'Container'
+
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure App Service'
+  inputs:
+    azureSubscription: 'AzureServiceConnection'
+    appType: 'webAppLinux'
+    appName: 'MavenHelloWorld'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.war'
